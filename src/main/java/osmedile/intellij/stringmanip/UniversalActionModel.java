@@ -1,13 +1,15 @@
 package osmedile.intellij.stringmanip;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.util.JDOMUtil;
+import com.intellij.openapi.util.NlsActions;
 import com.intellij.serialization.SerializationException;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.JDOMException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Objects;
+
 /**
  * TODO add ID
  */
@@ -23,15 +25,14 @@ public class UniversalActionModel {
 	public UniversalActionModel() {
 	}
 
-	public UniversalActionModel(AnAction anAction, String actionClassName, Object model) throws SerializationException {
+	public UniversalActionModel(String actionClassName, Object model, @NlsActions.ActionDescription String description, @NlsActions.ActionText @Nullable String textWithMnemonic) throws SerializationException {
 		this.actionClassName = actionClassName;
 		if (model != null) {
 			this.modelClass = model.getClass().getCanonicalName();
 			this.modelData = JDOMUtil.write(XmlSerializer.serialize(model));
 		}
-		Presentation templatePresentation = anAction.getTemplatePresentation();
-		setDescription(templatePresentation.getDescription());
-		setTextWithMnemonic(templatePresentation.getTextWithMnemonic());
+		setDescription(description);
+		setTextWithMnemonic(textWithMnemonic);
 	}
 
 	public String getModelClass() {
@@ -93,7 +94,20 @@ public class UniversalActionModel {
 		return textWithMnemonic;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		UniversalActionModel that = (UniversalActionModel) o;
+		return Objects.equals(actionClassName, that.actionClassName) && Objects.equals(modelClass, that.modelClass) && Objects.equals(modelData, that.modelData) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(icon, that.icon) && Objects.equals(textWithMnemonic, that.textWithMnemonic);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(actionClassName, modelClass, modelData, name, description, icon, textWithMnemonic);
+	}
+
 	public void setTextWithMnemonic(String textWithMnemonic) {
+
 		this.textWithMnemonic = textWithMnemonic;
 	}
 }

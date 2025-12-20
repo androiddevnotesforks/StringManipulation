@@ -3,10 +3,7 @@ package osmedile.intellij.stringmanip;
 import com.intellij.codeInsight.lookup.LookupEx;
 import com.intellij.codeInsight.lookup.LookupManager;
 import com.intellij.ide.ui.customization.CustomActionsSchema;
-import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.editor.ex.EditorEx;
@@ -36,7 +33,8 @@ public class PopupChoiceAction extends MyEditorAction {
 				if (editor instanceof EditorEx) {
 					dataContext = ((EditorEx) editor).getDataContext();
 				}
-				ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup(null, (ActionGroup) CustomActionsSchema.getInstance().getCorrectedAction("StringManipulation.Group.Main"),
+				AnAction action = CustomActionsSchema.getInstance().getCorrectedAction("StringManipulation.Group.Main");
+				ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup(null, (ActionGroup) action,
 						dataContext, JBPopupFactory.ActionSelectionAid.ALPHA_NUMBERING, true);
 
 				popup.showInBestPositionFor(dataContext);

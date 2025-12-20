@@ -15,8 +15,8 @@ import com.intellij.openapi.util.Couple;
 import com.intellij.openapi.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import osmedile.intellij.stringmanip.MyApplicationService;
 import osmedile.intellij.stringmanip.MyEditorAction;
+import osmedile.intellij.stringmanip.RepeatService;
 import osmedile.intellij.stringmanip.config.PluginPersistentStateComponent;
 import osmedile.intellij.stringmanip.replace.gui.CompositeForm;
 import osmedile.intellij.stringmanip.replace.gui.ReplaceCompositeModel;
@@ -49,7 +49,7 @@ public class DuplicateAndReplaceAction extends MyEditorAction {
 
 		@Override
 		public void executeWriteAction(@NotNull Editor editor, Caret caret, DataContext dataContext) {
-			MyApplicationService.setAction(DuplicateAndReplaceAction.class);
+			RepeatService.setAction(DuplicateAndReplaceAction.class);
 			Project project = editor.getProject();
 			if (project == null) {
 				return;

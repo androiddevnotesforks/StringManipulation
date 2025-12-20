@@ -28,7 +28,7 @@ public abstract class MyEditorWriteActionHandler2<T> extends EditorWriteActionHa
 
 	@Override
 	public final void doExecute(final Editor editor, @Nullable final Caret caret, final DataContext dataContext) {
-		MyApplicationService.setAction(actionClass, customActionModel);
+		RepeatService.setAction(actionClass, customActionModel);
 
 		final Pair<Boolean, T> additionalParameter = beforeWriteAction(editor, dataContext);
 		if (!additionalParameter.first) {
@@ -80,12 +80,12 @@ public abstract class MyEditorWriteActionHandler2<T> extends EditorWriteActionHa
 	}
 
 	protected final Pair<Boolean, T> stopExecution() {
-		MyApplicationService.setAction(actionClass, null);
+		RepeatService.setAction(actionClass, null);
 		return new Pair<Boolean, T>(false, null);
 	}
 
 	protected final Pair<Boolean, T> continueExecution(T additionalParameter) {
-		MyApplicationService.setAction(actionClass, (Object) additionalParameter);
+		RepeatService.setAction(actionClass, (Object) additionalParameter);
 		return new Pair<Boolean, T>(true, additionalParameter);
 	}
 

@@ -2,8 +2,11 @@ package osmedile.intellij.stringmanip.config;
 
 import com.intellij.openapi.diagnostic.Logger;
 import osmedile.intellij.stringmanip.Donate;
+import osmedile.intellij.stringmanip.RepeatService;
+import osmedile.intellij.stringmanip.utils.ActionUtils;
 
 import javax.swing.*;
+import java.util.Objects;
 
 public class SettingsForm {
 	private static final Logger LOG = com.intellij.openapi.diagnostic.Logger.getInstance(SettingsForm.class);
@@ -16,6 +19,7 @@ public class SettingsForm {
 	private JPanel charSwitchEncoding;
 	private JCheckBox repeatLastActionWithoutDialog;
 	private JCheckBox normalizeCaseSwitching;
+	private JTextField extraRepeatActionsCount;
 	private CaseSwitchingSettingsForm caseSwitchingSettingsForm;
 	private CustomActionSettingsForm customActionSettingsForm;
 	private CharacterSwitchingSettingsForm characterSwitchingSettingsForm;
@@ -69,18 +73,21 @@ public class SettingsForm {
 		doNotAddSelection.setSelected(data.isDoNotAddSelection());
 		repeatLastActionWithoutDialog.setSelected(data.isRepeatLastActionWithoutDialog());
 		normalizeCaseSwitching.setSelected(data.isNormalizeCaseSwitching());
+		extraRepeatActionsCount.setText(String.valueOf(RepeatService.getInstance().getState().getActionCount()));
 	}
 
 	public void getData(PluginPersistentStateComponent data) {
 		data.setDoNotAddSelection(doNotAddSelection.isSelected());
 		data.setRepeatLastActionWithoutDialog(repeatLastActionWithoutDialog.isSelected());
 		data.setNormalizeCaseSwitching(normalizeCaseSwitching.isSelected());
+		RepeatService.getInstance().getState().setActionCount(ActionUtils.safeParse(extraRepeatActionsCount.getText(), 1));
 	}
 
 	public boolean isModified(PluginPersistentStateComponent data) {
 		if (doNotAddSelection.isSelected() != data.isDoNotAddSelection()) return true;
 		if (repeatLastActionWithoutDialog.isSelected() != data.isRepeatLastActionWithoutDialog()) return true;
 		if (normalizeCaseSwitching.isSelected() != data.isNormalizeCaseSwitching()) return true;
+		if (!Objects.equals(extraRepeatActionsCount.getText(), String.valueOf(RepeatService.getInstance().getState().getActionCount()))) return true;
 		return false;
 	}
 }

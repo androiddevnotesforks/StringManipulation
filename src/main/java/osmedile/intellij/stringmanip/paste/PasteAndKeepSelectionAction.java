@@ -8,8 +8,8 @@ import com.intellij.openapi.editor.actions.BasePasteHandler;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.LineTokenizer;
 import org.jetbrains.annotations.NotNull;
-import osmedile.intellij.stringmanip.MyApplicationService;
 import osmedile.intellij.stringmanip.MyEditorAction;
+import osmedile.intellij.stringmanip.RepeatService;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -29,7 +29,7 @@ public class PasteAndKeepSelectionAction extends MyEditorAction {
 
 		@Override
 		public void executeWriteAction(@NotNull Editor editor, Caret caret, DataContext dataContext) {
-			MyApplicationService.setAction(PasteAndKeepSelectionAction.class);
+			RepeatService.setAction(PasteAndKeepSelectionAction.class);
 			Transferable content = EditorModificationUtil.getContentsToPasteToEditor(null);
 			if (content != null) {
 				pasteTransferable(editor, content);

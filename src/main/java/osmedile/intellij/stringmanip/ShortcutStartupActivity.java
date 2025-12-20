@@ -36,13 +36,29 @@ public class ShortcutStartupActivity implements StartupActivity, DumbAware {
 	public static void registerActions() {
 		ActionManager actionManager = ActionManager.getInstance();
 		DefaultActionGroup group = (DefaultActionGroup) actionManager.getAction("StringManipulation.Group.SwitchCase");
-		List<CustomActionModel> customActionModels = PluginPersistentStateComponent.getInstance().getCustomActionModels();
+
+		PluginPersistentStateComponent settings = PluginPersistentStateComponent.getInstance();
+		List<CustomActionModel> customActionModels = settings.getCustomActionModels();
 
 		unRegisterActions(customActionModels);
 
 		for (int i = customActionModels.size() - 1; i >= 0; i--) {
 			CustomActionModel customActionModel = customActionModels.get(i);
 			registerAction(actionManager, group, customActionModel);
+		}
+
+		registerRepeatActions(actionManager);
+
+	}
+
+	private static void registerRepeatActions(ActionManager actionManager) {
+		Integer actionCount = RepeatService.getInstance().getState().getActionCount();
+		DefaultActionGroup repeatGroup = (DefaultActionGroup) actionManager.getAction("StringManipulation.Group.Repeat");
+		for (int i = 1; i <= actionCount; i++) {
+			RepeatAction repeatAction = new RepeatAction();
+			repeatAction.setActionIndex(i);
+			actionManager.registerAction("osmedile.intellij.stringmanip.RepeatAction" + (i == 1 ? "" : i), repeatAction, PluginId.getId("String Manipulation"));
+			repeatGroup.add(repeatAction);
 		}
 	}
 
@@ -72,6 +88,15 @@ public class ShortcutStartupActivity implements StartupActivity, DumbAware {
 				unRegisterAction(instance, id + CustomActionModel.REVERSE, group);
 			}
 		}
+		Integer actionCount = RepeatService.getInstance().getState().getActionCount();
+		for (int i = 1; i <= actionCount; i++) {
+			instance.unregisterAction("osmedile.intellij.stringmanip.RepeatAction" + (i == 1 ? "" : i));
+		}
+		group = (DefaultActionGroup) instance.getAction("StringManipulation.Group.Repeat");
+		for (AnAction action : group.getChildActionsOrStubs()) {
+			group.remove(action);
+		}
+
 	}
 
 	private static void unRegisterAction(ActionManager instance, String actionId, DefaultActionGroup group) {

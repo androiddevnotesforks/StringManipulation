@@ -6,8 +6,8 @@ import com.intellij.openapi.editor.CaretAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.EditorWriteActionHandler;
 import org.apache.commons.lang3.StringUtils;
-import osmedile.intellij.stringmanip.MyApplicationService;
 import osmedile.intellij.stringmanip.MyEditorAction;
+import osmedile.intellij.stringmanip.RepeatService;
 import osmedile.intellij.stringmanip.utils.DuplicatUtils;
 import osmedile.intellij.stringmanip.utils.StringUtil;
 
@@ -27,7 +27,7 @@ public class IncrementDuplicateNumbersAction extends MyEditorAction {
 
 				@Override
 				public void executeWriteAction(final Editor editor, DataContext dataContext) {
-					MyApplicationService.setAction(getActionClass());
+					RepeatService.setAction(getActionClass());
 
 					final HashSet<String> values = new HashSet<String>();
 					editor.getCaretModel().runForEachCaret(new CaretAction() {

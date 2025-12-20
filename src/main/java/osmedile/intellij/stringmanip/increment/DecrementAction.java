@@ -7,8 +7,8 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.editor.actionSystem.EditorWriteActionHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import osmedile.intellij.stringmanip.MyApplicationService;
 import osmedile.intellij.stringmanip.MyEditorAction;
+import osmedile.intellij.stringmanip.RepeatService;
 import osmedile.intellij.stringmanip.utils.StringUtil;
 
 /**
@@ -23,7 +23,7 @@ public class DecrementAction extends MyEditorAction {
 			this.setupHandler(new EditorWriteActionHandler(true) {
 				@Override
 				public void executeWriteAction(Editor editor, DataContext dataContext) {
-					MyApplicationService.setAction(getActionClass());
+					RepeatService.setAction(getActionClass());
 
 					// Column mode not supported
 					if (editor.isColumnMode()) {

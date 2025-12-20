@@ -15,33 +15,10 @@ import java.awt.event.MouseEvent;
 public class RepeatAction extends MyEditorAction {
 
 	public static Object model = null;
+	protected int actionIndex = 0;
 
 	public RepeatAction() {
-		super(new MyEditorWriteActionHandler(null) {
-			@NotNull
-			@Override
-			protected Pair beforeWriteAction(Editor editor, DataContext dataContext) {
-				MyApplicationService service = MyApplicationService.getInstance();
-				Pair<AnAction, Object> pair = service.getLastAction();
-				AnAction anAction = pair.getFirst();
-				if (anAction != null) {
-					try {
-						if (withModel()) {
-							RepeatAction.model = pair.getSecond();
-						}
-						anAction.actionPerformed(new AnActionEvent(null, dataContext, "osmedile.intellij.stringmanip.RepeatAction", new Presentation(), ActionManager.getInstance(), 0));
-					} finally {
-						RepeatAction.model = null;
-					}
-				}
-				return stopExecution();
-			}
-
-			@Override
-			protected void executeWriteAction(Editor editor, DataContext dataContext, @Nullable Object additionalParameter) {
-
-			}
-		});
+		super(new RepeatActionHandler());
 	}
 
 	private static boolean withModel() {
@@ -69,7 +46,8 @@ public class RepeatAction extends MyEditorAction {
 	@Override
 	public void update(AnActionEvent e) {
 		super.update(e);
-		UniversalActionModel anAction = PluginPersistentStateComponent.getInstance().getLastActionModel();
+		RepeatService repeatService = RepeatService.getInstance();
+		UniversalActionModel anAction = repeatService.getState().get(actionIndex);
 		if (anAction != null) {
 			e.getPresentation().setEnabled(true);
 			e.getPresentation().setText(StringManipulationBundle.message("repeat.text") + " - " + anAction.getTextWithMnemonic());
@@ -86,6 +64,50 @@ public class RepeatAction extends MyEditorAction {
 			e.getPresentation().setText(StringManipulationBundle.message("repeat.last.action.text"));
 			e.getPresentation().setDescription((String) null);
 			e.getPresentation().setEnabled(false);
+		}
+	}
+
+	public void setActionIndex(int actionIndex) {
+		this.actionIndex = actionIndex;
+		RepeatActionHandler newHandler = new RepeatActionHandler();
+		newHandler.actionIndex = actionIndex;
+		setupHandler(newHandler);
+	}
+
+	private static class RepeatActionHandler extends MyEditorWriteActionHandler {
+
+		/**
+		 * from 1
+		 */
+		protected int actionIndex = 1;
+
+		public RepeatActionHandler() {
+			super(null);
+		}
+
+		@NotNull
+		@Override
+		protected Pair beforeWriteAction(Editor editor, DataContext dataContext) {
+			RepeatService service = RepeatService.getInstance();
+			Pair<AnAction, Object> pair = service.getLastAction(actionIndex);
+			AnAction anAction = pair.getFirst();
+			if (anAction != null) {
+				try {
+					if (withModel()) {
+						RepeatAction.model = pair.getSecond();
+					}
+					AnActionEvent anActionEvent = new AnActionEvent(null, dataContext, "osmedile.intellij.stringmanip.RepeatAction", new Presentation(), ActionManager.getInstance(), 0);
+					anAction.actionPerformed(anActionEvent);
+				} finally {
+					RepeatAction.model = null;
+				}
+			}
+			return stopExecution();
+		}
+
+		@Override
+		protected void executeWriteAction(Editor editor, DataContext dataContext, @Nullable Object additionalParameter) {
+
 		}
 	}
 }

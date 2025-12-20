@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import osmedile.intellij.stringmanip.CaseSwitchingSettings;
 import osmedile.intellij.stringmanip.CharacterSwitchingSettings;
-import osmedile.intellij.stringmanip.UniversalActionModel;
 import osmedile.intellij.stringmanip.align.ColumnAlignerModel;
 import osmedile.intellij.stringmanip.border.BorderSettings;
 import osmedile.intellij.stringmanip.escaping.normalize.NormalizationSettings;
@@ -38,7 +37,6 @@ public class PluginPersistentStateComponent implements PersistentStateComponent<
 	public static final int MAX_HISTORY = 20;
 	private List<ColumnAlignerModel> columnAlignerHistory = new ArrayList<ColumnAlignerModel>();
 	private List<CustomActionModel> customActionModels = DefaultActions.defaultActions();
-	private List<UniversalActionModel> universalActions = new ArrayList<>();
 
 	private int lastSelectedAction = 0;
 	private int version = 0;
@@ -55,7 +53,6 @@ public class PluginPersistentStateComponent implements PersistentStateComponent<
 
 	private List<GrepSettings> grepHistory = new ArrayList<>();
 	private List<ReplaceCompositeModel> replaceHistory = new ArrayList<>();
-	private UniversalActionModel lastActionModel;
 	private boolean repeatLastActionWithoutDialog = false;
 	private BorderSettings borderSettings = new BorderSettings();
 	private boolean normalizeCaseSwitching = true;
@@ -454,14 +451,6 @@ public class PluginPersistentStateComponent implements PersistentStateComponent<
 		return null;
 	}
 
-	public UniversalActionModel getLastActionModel() {
-		return lastActionModel;
-	}
-
-	public void setLastActionModel(UniversalActionModel lastActionModel) {
-		this.lastActionModel = lastActionModel;
-	}
-
 	public boolean isRepeatLastActionWithoutDialog() {
 		return repeatLastActionWithoutDialog;
 	}
@@ -485,4 +474,5 @@ public class PluginPersistentStateComponent implements PersistentStateComponent<
 	public void setNormalizeCaseSwitching(final boolean normalizeCaseSwitching) {
 		this.normalizeCaseSwitching = normalizeCaseSwitching;
 	}
+
 }

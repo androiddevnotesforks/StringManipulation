@@ -11,8 +11,8 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import org.jetbrains.annotations.NotNull;
-import osmedile.intellij.stringmanip.MyApplicationService;
 import osmedile.intellij.stringmanip.MyEditorAction;
+import osmedile.intellij.stringmanip.RepeatService;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -31,7 +31,7 @@ public class PasteAsPhpArrayAction extends MyEditorAction {
 
 		@Override
 		public void executeWriteAction(@NotNull Editor editor, Caret caret, DataContext dataContext) {
-			MyApplicationService.setAction(PasteAsPhpArrayAction.class);
+			RepeatService.setAction(PasteAsPhpArrayAction.class);
 			Transferable content = EditorModificationUtil.getContentsToPasteToEditor(null);
 			if (content != null) {
 				pasteTransferable(editor, content);

@@ -43,8 +43,10 @@
         >
             <add-to-group group-id="EditMenu" anchor="last"/>
 
-            <action id="osmedile.intellij.stringmanip.RepeatAction" class="osmedile.intellij.stringmanip.RepeatAction"
-                    text="Repeat Last Action"/>
+            <group popup="false" id="StringManipulation.Group.Repeat" text="String Manipulation - Repeat group">
+                <!--                <action id="osmedile.intellij.stringmanip.RepeatAction" class="osmedile.intellij.stringmanip.RepeatAction"-->
+                <!--                        text="Repeat Last Action"/>-->
+            </group>
             <separator/>
 
             <group id="StringManipulation.Group.EscapeUnescape" text="Escape/Unescape..."
@@ -752,6 +754,10 @@
                         class="osmedile.intellij.stringmanip.paste.PasteCamelCasedAction"
                         text="Paste - camelCased (Capitalized if needed)"
                 />
+                <action id="StringManipulation.PasteSnakeCased"
+                        class="osmedile.intellij.stringmanip.paste.PasteSnakeCasedAction"
+                        text="Paste - snake__cased"
+                />
                 <action id="StringManipulation.PasteAndKeepSelection"
                         class="osmedile.intellij.stringmanip.paste.PasteAndKeepSelectionAction"
                         text="Paste and Keep Selections"
@@ -873,7 +879,7 @@
                     doNotActivateOnStart="true"
                     factoryClass="osmedile.intellij.stringmanip.toolwindow.StringManipulationToolWindowFactory"/>
 
-        <applicationService serviceImplementation="osmedile.intellij.stringmanip.MyApplicationService"/>
+        <applicationService serviceImplementation="osmedile.intellij.stringmanip.RepeatService"/>
 
         <postStartupActivity implementation="osmedile.intellij.stringmanip.ShortcutStartupActivity"/>
         <customizableActionGroupProvider

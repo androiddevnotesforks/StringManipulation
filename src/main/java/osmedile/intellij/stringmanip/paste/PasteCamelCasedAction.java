@@ -9,8 +9,8 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.LineTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import osmedile.intellij.stringmanip.MyApplicationService;
 import osmedile.intellij.stringmanip.MyEditorAction;
+import osmedile.intellij.stringmanip.RepeatService;
 import osmedile.intellij.stringmanip.styles.Style;
 import osmedile.intellij.stringmanip.utils.StringUtil;
 
@@ -32,7 +32,7 @@ public class PasteCamelCasedAction extends MyEditorAction {
 
 		@Override
 		public void executeWriteAction(@NotNull Editor editor, Caret caret, DataContext dataContext) {
-			MyApplicationService.setAction(PasteCamelCasedAction.class);
+			RepeatService.setAction(PasteCamelCasedAction.class);
 			Transferable content = EditorModificationUtil.getContentsToPasteToEditor(null);
 			if (content != null) {
 				pasteTransferable(editor, content);

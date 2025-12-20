@@ -11,7 +11,7 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import osmedile.intellij.stringmanip.MyApplicationService;
+import osmedile.intellij.stringmanip.RepeatService;
 import osmedile.intellij.stringmanip.StringManipulationBundle;
 
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class DelimitedListAction extends EditorAction {
 			setupHandler(new EditorActionHandler() {
 				@Override
 				protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
-					MyApplicationService.setAction(DelimitedListAction.class);
+					RepeatService.setAction(DelimitedListAction.class);
 					final Pair<Boolean, Settings> dialogResult = DelimitedListAction.this.showDialog(editor);
 					if (!dialogResult.first) {
 						return;
